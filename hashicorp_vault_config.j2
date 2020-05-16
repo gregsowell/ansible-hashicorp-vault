@@ -1,0 +1,24 @@
+#
+# This is a sample dev server config.
+#
+# !!   IT IS INSECURE   !!
+# !! DO NOT USE IN PROD !!
+#
+
+# backend "inmem" {}
+
+backend "file" {
+  path = "/mnt/vault/data"
+}
+
+listener "tcp" {
+ address = "127.0.0.1:8200"
+ tls_disable = 1
+}
+
+listener "tcp" {
+ address = "{{ ansible_host }}:8200"
+ tls_disable = 1
+}
+
+disable_mlock = true
