@@ -4,6 +4,13 @@
   vars:
 
   tasks:
+  - name: make sure pip libraries are installed - used for hashi playbooks
+    pip:
+      name: "{{ item }}"
+    loop:
+      - hvac
+      - "hvac[parse]"
+
   - name: create the vault folder
     file:
       path: /opt/vault/directory
@@ -15,6 +22,12 @@
       url: https://releases.hashicorp.com/vault/1.4.1/vault_1.4.1_linux_amd64.zip
       dest: /opt/vault/directory/vault_1.4.1_linux_amd64.zip
       mode: '0440'
+
+  - name: install unzip
+    yum:
+      name:
+        - unzip
+      state: latest
 
   - name: unzip the package
     unarchive:
@@ -32,3 +45,47 @@
     command: vault --version
     register: vault_ver
     failed_when: "'command not found' in vault_ver.stderr"
+
+  - name: configure a service user named vault
+    user:
+      name: vault
+      shell: /bin/false
+      create_home: true
+      home: /etc/vault.d
+      system: yes
+
+  - name: create the service file
+    copy:
+      src: hahicorp_vault_service.j2
+      dest: /etc/systemd/system/vault.service
+      owner: root
+      group: root
+
+  - name: create the vault config folder
+    file:
+      path: /etc/vault.d
+      state: directory
+      mode: '0755'
+      owner: vault
+      group: vault
+
+  - name: copy vault config file over
+    template:
+      src: hashicorp_vault_config.j2
+      dest: /etc/vault.d/vault.hcl
+      owner: vault
+      group: vault
+
+  - name: create the vault file storage folder
+    file:
+      path: /mnt/vault/data
+      state: directory
+      mode: '0755'
+      owner: vault
+      group: vault
+
+  - name: enable vault service and start it
+    systemd:
+      name: vault.service
+      enabled: yes
+      state: started
