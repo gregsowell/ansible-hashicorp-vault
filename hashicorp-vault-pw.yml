@@ -3,6 +3,7 @@
   gather_facts: false
   tasks:
 
+# ***  Replace the token below with your own token, either root or another user ***
 
 #  - name: Return all secrets from a path
 #    debug:
