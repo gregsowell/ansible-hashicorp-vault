@@ -1,0 +1,28 @@
+- name: test vault
+  hosts: localhost
+  gather_facts: false
+  vars:
+    vault_server: "{{ vault_host }}"  #ip or domain name of vault server
+  tasks:
+
+# ***  Replace the token below with your own token, either root or another user ***
+
+#  - name: Return all secrets from a path
+#    debug:
+#      msg: "{{ lookup('hashi_vault', 'secret=secret/2020 token=s.fKYto48B80ObQrQkorMoexJv url=http://' + vault_server + ':8200')}}"
+
+  - name: register password from vault
+    set_fact: 
+      vault_pw: "{{ lookup('hashi_vault', 'secret=secret/2020 token=s.fKYto48B80ObQrQkorMoexJv url=http://' + vault_server + ':8200')}}"
+
+#  - name: Return all secrets from a path
+#    debug:
+#      msg: "{{ vault_pw['password'] }}"
+
+ - name: Change Password for User netop
+  ios_user:
+    name: backup
+    configured_password: "{{ vault_pw['password'] }}"
+    update_password: always
+    state: present
+    privilege: 15
