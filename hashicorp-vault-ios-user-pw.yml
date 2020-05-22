@@ -1,5 +1,5 @@
 - name: test vault
-  hosts: localhost
+  hosts: "{{ limit_hosts }}"
   gather_facts: false
   vars:
     vault_server: "{{ vault_host }}"  #ip or domain name of vault server
