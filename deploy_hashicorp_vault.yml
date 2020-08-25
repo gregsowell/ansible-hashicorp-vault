@@ -1,5 +1,5 @@
 - name: install vault on a clean system
-  hosts: vault-host
+  hosts: vault1
   become: true
   vars:
 
