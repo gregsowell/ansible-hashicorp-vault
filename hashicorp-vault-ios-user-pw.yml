@@ -1,5 +1,5 @@
 - name: test vault
-  hosts: all
+  hosts: cat_upgrade
 #  hosts: "{{ limit_hosts }}"
   gather_facts: false
   vars:
