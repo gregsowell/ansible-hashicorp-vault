@@ -14,7 +14,7 @@
 
   - name: register password from vault
     set_fact: 
-      vault_pw: "{{ lookup('hashi_vault', 'secret=secret/2020 token=s.fKYto48B80ObQrQkorMoexJv url=http://' + vault_server + ':8200')}}"
+      vault_pw: "{{ lookup('hashi_vault', 'secret=secret/2020 token=s.YhgTl1zHVrTPMfjaxj000Us6 url=http://' + vault_server + ':8200')}}"
     run_once: true
     no_log: ture
 
