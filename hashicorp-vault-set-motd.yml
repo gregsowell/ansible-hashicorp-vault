@@ -1,0 +1,27 @@
+----
+- name: log into a server with unique token for each run
+  hosts: web
+#  hosts: "{{ limit_hosts }}"
+  gather_facts: false
+  vars:
+    vault_server: "{{ vault_host }}"  #ip or domain name of vault server
+    # These will be replaced at run time via a survey
+    my_secret: secret/2020
+    my_token: s.YhgTl1zHVrTPMfjaxj000Us6
+  tasks:
+
+# ***  Replace the token below with your own token, either root or another user ***
+  - name: register password from vault
+    set_fact: 
+      vault_pw: "{{ lookup('hashi_vault', my_secret + ' token=' + my_token + ' url=http://' + vault_server + ':8200')}}"
+      ansible_password: "{{ vault_pw }}"
+    run_once: true
+    no_log: true
+
+#  - name: Return all secrets from a path
+#    debug:
+#      msg: "{{ vault_pw['password'] }}"
+
+  - name: Just do a simple echo on the server
+    ansible.builtin.shell:
+      command: echo "I logged into a server"
