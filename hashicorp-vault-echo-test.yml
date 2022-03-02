@@ -6,8 +6,10 @@
   vars:
     vault_server: "{{ vault_host }}"  #ip or domain name of vault server
     # These will be replaced at run time via a survey
-    my_secret: secret/2020
-    my_token: s.YhgTl1zHVrTPMfjaxj000Us6
+#    my_secret: secret/2020
+#    my_token: s.YhgTl1zHVrTPMfjaxj000Us6
+    my_secret: replace-me
+    my_token: replace-me
   tasks:
 
 # ***  Replace the token below with your own token, either root or another user ***
