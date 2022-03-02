@@ -15,8 +15,12 @@
 # ***  Replace the token below with your own token, either root or another user ***
   - name: register password from vault
     set_fact: 
+# per host lookup
+#      vault_pw: "{{ lookup('hashi_vault', my_secret + '/' + inventory_hostname + ' token=' + my_token + ' url=http://' + vault_server + ':8200')}}"
+# on the fly lookup
       vault_pw: "{{ lookup('hashi_vault', my_secret + ' token=' + my_token + ' url=http://' + vault_server + ':8200')}}"
       ansible_password: "{{ vault_pw }}"
+# disable run_once for per host lookup
     run_once: true
     no_log: true
 
